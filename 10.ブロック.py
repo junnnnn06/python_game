@@ -42,19 +42,19 @@ def tick():
     if BALL.rect.centery < 1000:
         BALL.move()
 
-    # ブロックと衝突？
+    # ブロックと衝突
     prevlen = len(BLOCKS)
     BLOCKS = [x for x in BLOCKS
               if not x.rect.colliderect(BALL.rect)]
     if len(BLOCKS) != prevlen:
         BALL.dir *= -1
 
-    # パドルと衝突？
+    # パドルと衝突
     if PADDLE.rect.colliderect(BALL.rect):
         BALL.dir = 90 + (PADDLE.rect.centerx - BALL.rect.centerx) \
             / PADDLE.rect.width * 80
 
-    # 壁と衝突？
+    # 壁と衝突
     if BALL.rect.centerx < 0 or BALL.rect.centerx > 600:
         BALL.dir = 180 - BALL.dir
     if BALL.rect.centery < 0:
