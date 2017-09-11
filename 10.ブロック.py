@@ -6,29 +6,28 @@ import pygame
 from pygame.locals import QUIT, KEYDOWN, K_LEFT, K_RIGHT, Rect
 
 class Block:
-    """ ブロック・ボール・パドルオブジェクト """
+
     def __init__(self, col, rect, speed=0):
         self.col = col
         self.rect = rect
         self.speed = speed
         self.dir = random.randint(-45, 45) + 270
 
-    def move(self):
-        """ ボールを動かす """
+
         self.rect.centerx += math.cos(math.radians(self.dir))\
              * self.speed
         self.rect.centery -= math.sin(math.radians(self.dir))\
              * self.speed
 
     def draw(self):
-        """ ブロック・ボール・パドルを描画する """
+
         if self.speed == 0:
             pygame.draw.rect(SURFACE, self.col, self.rect)
         else:
             pygame.draw.ellipse(SURFACE, self.col, self.rect)
 
 def tick():
-    """ 毎フレーム処理 """
+
     global BLOCKS
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -42,19 +41,19 @@ def tick():
     if BALL.rect.centery < 1000:
         BALL.move()
 
-    # ブロックと衝突
+
     prevlen = len(BLOCKS)
     BLOCKS = [x for x in BLOCKS
               if not x.rect.colliderect(BALL.rect)]
     if len(BLOCKS) != prevlen:
         BALL.dir *= -1
 
-    # パドルと衝突
+
     if PADDLE.rect.colliderect(BALL.rect):
         BALL.dir = 90 + (PADDLE.rect.centerx - BALL.rect.centerx) \
             / PADDLE.rect.width * 80
 
-    # 壁と衝突
+
     if BALL.rect.centerx < 0 or BALL.rect.centerx > 600:
         BALL.dir = 180 - BALL.dir
     if BALL.rect.centery < 0:
@@ -70,7 +69,7 @@ PADDLE = Block((242, 242, 0), Rect(300, 700, 100, 30))
 BALL = Block((242, 242, 0), Rect(300, 400, 20, 20), 10)
 
 def main():
-    """ メインルーチン """
+
     myfont = pygame.font.SysFont(None, 80)
     mess_clear = myfont.render("Cleared!", True, (255, 255, 0))
     mess_over = myfont.render("Game Over!", True, (255, 255, 0))
